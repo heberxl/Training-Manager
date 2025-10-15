@@ -1,0 +1,14 @@
+<p>users works!</p>
+<h1>Hola</h1>
+<h2>Datos del Usuario</h2>
+<p>Nombre: {{ nombre }}</p>
+<p>Apellido: {{ apellido }}</p>
+<p>Edad: {{ edad }}</p>
+@if (edad >= 18) {
+  <p>You mayor de edad</p>
+} @else {
+  <p>You menor de edad</p>
+}
+
+<app-user-list [users]="usersList"></app-user-list>
+<app-user-form (sendUser)="onAddUser($event)"></app-user-form>
