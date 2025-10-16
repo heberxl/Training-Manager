@@ -19,4 +19,14 @@ export class Alumnos {
     { id: 9, nombre: 'Chris', apellido: 'Purple', direccion: '369 Walnut Rd', telefono: '555-8642', email: 'chris@example.com' },
     { id: 10, nombre: 'Olivia', apellido: 'Orange', direccion: '159 Chestnut St', telefono: '555-9753', email: 'olivia@example.com' }
   ];
+
+    onAddAlumno(alumno: Alumno) {
+      this.AlumnosList.push({
+        ...alumno,
+        id: this.AlumnosList[this.AlumnosList.length - 1].id + 1,
+    });
+  
+    }
+
 }
+
