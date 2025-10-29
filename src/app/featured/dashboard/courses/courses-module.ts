@@ -5,6 +5,8 @@ import { CoursesRoutingModule } from './courses-routing-module';
 import { Courses } from './courses';
 import { CoursesTable } from './courses-table/courses-table';
 import { CoursesForm } from './courses-form/courses-form';
+import { S } from '@angular/cdk/keycodes';
+import { SharedModule } from '../../../shared/shared-module';
 
 
 @NgModule({
@@ -15,7 +17,8 @@ import { CoursesForm } from './courses-form/courses-form';
   ],
   imports: [
     CommonModule,
-    CoursesRoutingModule
+    CoursesRoutingModule,
+    SharedModule,
   ]
 })
 export class CoursesModule { }
