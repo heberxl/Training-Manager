@@ -7,6 +7,12 @@
   background: linear-gradient(to bottom right, #c2c2c2, #dcdf43, #635d26);
 }
 
+mat-card {
+  width: 450px;
+  padding: 50px;
+  border-radius: 10px;
+}
+
 mat-card-header {
   display: flex;
   flex-direction: column;
@@ -30,10 +36,6 @@ mat-card-header {
   justify-content: space-around;
   align-items: center;
   padding: 15px;
-}
-
-mat-card-content {
-  width: 100%;
 }
 
 form {
