@@ -8,6 +8,7 @@ import { UsersModule } from './users/users-module';
 import { SharedModule } from './shared/shared-module';
 import { AlumnosModule } from "./alumnos/alumnos-module";
 import { share } from 'rxjs';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { share } from 'rxjs';
     AlumnosModule
 ],
   providers: [
-    provideBrowserGlobalErrorListeners()
+    provideBrowserGlobalErrorListeners(),
+    provideHttpClient(withFetch())
   ],
   bootstrap: [App]
 })
