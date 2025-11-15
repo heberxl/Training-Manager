@@ -1,16 +1,27 @@
 import { TestBed } from '@angular/core/testing';
+import { CoursesService } from './courses';
+import { provideHttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
-import { Courses } from './courses';
-
-describe('Courses', () => {
-  let service: Courses;
+describe('Courses Service Test', () => {
+  let service: CoursesService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(Courses);
+    TestBed.configureTestingModule({
+      providers: [provideHttpClient(), Router],
+    });
+    
+    service = TestBed.inject(CoursesService);
   });
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
+  it('Debería crear el servicio', () => {
+    expect(service).not.toBeNull();
+  });
+
+  it('Debería retornar un curso cuando se le pase un Id válido', () => {
+    const testId = 1;
+    service.getCourse(testId).subscribe((course) => {
+      expect(course).not.toBeNull();
+    });
   });
 });

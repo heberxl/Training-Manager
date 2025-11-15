@@ -1,6 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Dashboard } from './dashboard';
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { SharedModule } from '../../shared/shared-module';
+import { DashboardRoutingModule } from './dashboard-routing-module';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('Dashboard', () => {
   let component: Dashboard;
@@ -8,7 +14,26 @@ describe('Dashboard', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [Dashboard]
+      declarations: [Dashboard],
+      imports: [
+         CommonModule,
+         SharedModule,
+         DashboardRoutingModule
+      ],
+      providers: [
+        provideHttpClient(withFetch()),
+         {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({}),
+            snapshot: {
+              params: {
+                get: () => null
+              },
+            },
+          },
+        },
+      ],
     })
     .compileComponents();
 
