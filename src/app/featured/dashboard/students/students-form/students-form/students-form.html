@@ -1,0 +1,78 @@
+<form [formGroup]="createForm" (ngSubmit)="onSubmit()">
+  @if (isEditing) {
+  <mat-form-field appearance="fill">
+    <mat-label>ID</mat-label>
+    <input matInput disabled value="{{ studentId }}" />
+  </mat-form-field>
+  }
+
+  <mat-form-field class="w-full">
+    <mat-label>Nombre</mat-label>
+    <input
+      [ngClass]="{
+          'is-invalid': inputInvalid('nombre'),
+          'is-valid': inputValid('nombre') && createForm.get('nombre')?.dirty,
+        }"
+      matInput
+      name="nombre"
+      formControlName="nombre"
+    />
+
+    <mat-error> {{ getError('nombre') }} </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="w-full">
+    <mat-label>Apellido</mat-label>
+    <textarea
+      matInput
+      placeholder="apellido"
+      name="apellido"
+      formControlName="apellido"
+    ></textarea>
+
+    <mat-error> {{ getError('apellido') }} </mat-error>
+  </mat-form-field>
+
+    <mat-form-field class="w-full">
+        <mat-label>Dirección</mat-label>
+        <input
+        matInput
+        name="direccion"
+        formControlName="direccion"
+        />
+    
+        <mat-error> {{ getError('direccion') }} </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-full">
+        <mat-label>Teléfono</mat-label>
+        <input
+        matInput
+        name="telefono"
+        formControlName="telefono"
+        />
+    
+        <mat-error> {{ getError('telefono') }} </mat-error>
+    </mat-form-field>
+    <mat-form-field class="w-full">
+        <mat-label>Email</mat-label>
+        <input
+        matInput
+        name="email"
+        formControlName="email"
+        />
+    
+        <mat-error> {{ getError('email') }} </mat-error>
+    </mat-form-field>
+
+
+  <mat-form-field class="w-full">
+    <mat-label>Estado</mat-label>
+    <mat-select name="status" formControlName="status">
+      <mat-option value="SCHEDULED">Active</mat-option>
+      <mat-option value="STARTED">Inactivo</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary">Guardar</button>
+</form>
+

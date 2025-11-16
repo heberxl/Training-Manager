@@ -20,7 +20,7 @@ listItems = [
       url: 'courses',
     },
     {
-      name: 'Alumnos',
+      name: 'Estudiantes',
       icon: 'groups',
       url: 'students',
     },

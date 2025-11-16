@@ -56,5 +56,105 @@
       "status": "SCHEDULED"
     }
   ],
-  "students": []
+  "students": [
+    {
+      "id": "1",
+      "nombre": "jhon",
+      "apellido": "Doe",
+      "direccion": "123 Main St",
+      "telefono": "555-1234",
+      "email": "john@example.com",
+      "status": "STARTED"
+    },
+    {
+      "id": "2",
+      "nombre": "Jane",
+      "apellido": "Smith",
+      "direccion": "456 Oak Ave",
+      "telefono": "555-5678",
+      "email": "jane@example.com",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "3",
+      "nombre": "Jim",
+      "apellido": "Brown",
+      "direccion": "789 Pine Rd",
+      "telefono": "555-8765",
+      "email": "jim@example.com",
+      "status": "INACTIVE"
+    },
+    {
+      "id": "4",
+      "nombre": "Sara",
+      "apellido": "White",
+      "direccion": "321 Maple St",
+      "telefono": "555-4321",
+      "email": "sara@example.com",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "5",
+      "nombre": "Tom",
+      "apellido": "Black",
+      "direccion": "654 Cedar Ave",
+      "telefono": "555-6789",
+      "email": "tom@example.com",
+      "status": "INACTIVE"
+    },
+    {
+      "id": "6",
+      "nombre": "Lucy",
+      "apellido": "Green",
+      "direccion": "987 Birch Rd",
+      "telefono": "555-9876",
+      "email": "lucy@example.com",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "7",
+      "nombre": "Mike",
+      "apellido": "Blue",
+      "direccion": "147 Spruce St",
+      "telefono": "555-2468",
+      "email": "mike@example.com",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "8",
+      "nombre": "Emma",
+      "apellido": "Yellow",
+      "direccion": "258 Elm Ave",
+      "telefono": "555-1357",
+      "email": "emma@example.com",
+      "status": "INACTIVE"
+    },
+    {
+      "id": "9",
+      "nombre": "Chris",
+      "apellido": "Purple",
+      "direccion": "369 Walnut Rd",
+      "telefono": "555-8642",
+      "email": "chris@example.com",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "10",
+      "nombre": "Olivia",
+      "apellido": "Orange",
+      "direccion": "159 Chestnut St",
+      "telefono": "555-9753",
+      "email": "olivia@example.com",
+      "status": "ACTIVE"
+    },
+    {
+      "id": "11",
+      "nombre": "Juan",
+      "apellido": "Perez Vargas",
+      "direccion": "Jr. Lima 224",
+      "telefono": "9128833",
+      "email": "jpvargas@gmail.com",
+      "status": "SCHEDULED"
+    }
+  ]
 }
