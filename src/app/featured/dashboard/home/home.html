@@ -1,1 +1,27 @@
 <h1>Bienvenidos {{ (user$ | async)?.user }}</h1>
+
+@if ((user$ | async)?.role ==="ADMIN") {
+<div class="container-chart">
+    <mat-card class="example-card" appearance="outlined">
+        <mat-card-header>
+            <mat-card-title>Estadísticas de la semana</mat-card-title>
+        </mat-card-header>
+        <img
+            mat-card-image
+            src="https://marketplace.canva.com/EAFYsY7o5Ts/2/0/1600w/canva-gr%C3%A1fico-de-barras-con-l%C3%ADnea-de-tiempo-empresa-corporativa-profesional-gris-negro-colorido-zlfvJkdOUmc.jpg"
+            alt="Imagen de estadísticas semanales"
+        />
+        <mat-card-content>
+            <p>
+                En este análisi se muestra la evolución de las ventas de productos en la semana pasada.
+                Se puede observar que las ventas aumentaron en un 20% con respecto a la semana anterior.
+            </p>
+        </mat-card-content>  
+        <mat-card-actions>
+            <button matButton>LIKE</button>
+            <button matButton>SHARE</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+
+}
