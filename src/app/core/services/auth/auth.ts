@@ -3,43 +3,68 @@ import { API_URL } from '../../utils/constants';
 import { HttpClient } from '@angular/common/http';
 import { User } from './model/User';
 import { Router } from '@angular/router';
+import { map, Observable, of } from 'rxjs';
+import { RootState } from '../../store';
+import { Store } from '@ngrx/store';
+import { selectUser } from '../../store/auth/auth.selector';
+import { setAuthUser } from '../../store/auth/auth.action';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private usersUrl = `${API_URL}/user`;
-  user: User | null = null;
-  
-  constructor(private http: HttpClient, private router: Router) { }
+  user$: Observable<any>;
+
+  constructor(private http: HttpClient, private router: Router, private store: Store<RootState>) { 
+    this.user$ = this.store.select(selectUser);
+    const token = localStorage.getItem('token');
+    if (token) {
+      const [email, password] = token.split('&');
+      this.login(email, password).subscribe((user) => {
+        this.store.dispatch(setAuthUser({ payload: user }))
+      });
+    }
+      
+  }
 
   login(email: string, password: string) {
-    this.http.get<User[]>(`${this.usersUrl}`).subscribe(users => {
-      const user = users.find(u => u.email === email);
+
+    return this.http.get<User[]>(this.usersUrl).pipe(
+      map((users) => {
+        const user = users.find((user) => user.email === email);
+
         if(!user) {
-          throw new Error('Email no válido');
+          throw new Error('Usuario no encontrado');
         }
-        if(user.password !== password) {
+        if (user.password !== password) {
           throw new Error('Contraseña incorrecta');
         }
-        localStorage.setItem('token', user.email);
-        this.user = user;
-        this.router.navigate(['/dashboard']);
-      });
+
+        this.setToken(`${user.email}&${user.password}`);
+        this.store.dispatch(setAuthUser({ payload: user }));
+        
+        return user;
+      })
+  )
   }
 
   logout() {
     localStorage.removeItem('token');
-    this.user = null;
+    this.store.dispatch(setAuthUser({ payload: null }));
     this.router.navigate(['/login']);
   }
 
+  setToken(email: string) {
+    localStorage.setItem('token', email);
+  }
+
   isAuthenticated() {
-    //return localStorage.getItem('token') !== null;
     const token = localStorage.getItem('token');
+
     if (!token) {
       return false;
     }
-    return token === this.user?.email;
+    return true;
   }
 }
