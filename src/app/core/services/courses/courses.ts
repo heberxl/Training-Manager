@@ -19,8 +19,11 @@ export class CoursesService {
     this.getCourses();
   }
 
+  getCoursesForEffects() {
+    return this.http.get<Course[]>(this.coursesUrl);
+  }
+
   getCourses() {
-    //this.courseSubject.next(this.courses);
     this.http.get<Course[]>(this.coursesUrl).subscribe((courses) => {
       this.courses = courses;
       this.courseSubject.next(courses);
@@ -28,13 +31,10 @@ export class CoursesService {
   }
 
   getCourse(id: number) {
-   //return of(this.courses.find((course) => course.id === id));
     return this.http.get<Course>(`${this.coursesUrl}/${id}`);
   }
 
   addCourse(course: Course) {
-    const newId = String(Number(this.courses[this.courses.length - 1].id) + 1);
-    course.id = newId;
     this.http.post<Course>(this.coursesUrl, course).subscribe((course) => {
       this.courses.push(course);
       this.courseSubject.next([...this.courses]);
@@ -42,20 +42,17 @@ export class CoursesService {
   }
 
   updateCourse(course: Course) {
-    const updatedCourses = this.courses.map((c) => (c.id === course.id ? course : c));
     this.http.put<Course>(`${this.coursesUrl}/${course.id}`, course).subscribe((course) => {
-      this.courses = updatedCourses;
-      this.courseSubject.next(updatedCourses);
+      this.courseSubject.next([...this.courses, course]);
     });
   }
 
   deleteCourse(id: number) {
-    const updatedCourses = this.courses.filter((c) => c.id !== id);
-    this.http.delete(`${this.coursesUrl}/${id}`).subscribe(() => {
-        this.courses = updatedCourses;
-        this.courseSubject.next(updatedCourses);
+    this.http.delete<Course>(`${this.coursesUrl}/${id}`).subscribe(() => {
+        this.courseSubject.next(this.courses.filter((c) => c.id !== id));
       });
   }
 }
+
 
 

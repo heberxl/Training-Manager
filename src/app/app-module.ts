@@ -9,9 +9,9 @@ import { SharedModule } from './shared/shared-module';
 import { AlumnosModule } from "./alumnos/alumnos-module";
 import { share } from 'rxjs';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideStore } from '@ngrx/store';
+import { provideStore, StoreModule } from '@ngrx/store';
 import { rootReducer } from './core/store';
-import { provideEffects } from '@ngrx/effects';
+import { EffectsModule, provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 @NgModule({
@@ -22,7 +22,9 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
     BrowserModule,
     AppRoutingModule,
     UsersModule,
-    AlumnosModule
+    AlumnosModule,
+    StoreModule.forRoot(rootReducer),
+    EffectsModule.forRoot([]),
 ],
   providers: [
     provideBrowserGlobalErrorListeners(),
