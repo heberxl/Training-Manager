@@ -3,6 +3,11 @@ import { StudentsService } from '../../../../../core/services/students/students'
 import { Student, studentColumns } from '../../../../../core/services/students/model/Student';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { Observable } from 'rxjs';
+import { RootState } from '../../../../../core/store';
+import { Store } from '@ngrx/store';
+import { selectError, selectIsLoading, selectStudents } from '../../store/students.selectors';
+import { StudentsActions } from '../../store/students.actions';
 
 @Component({
   selector: 'app-students-table',
@@ -16,14 +21,27 @@ export class StudentsTable {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(private studentsService: StudentsService) {
-    this.studentsService.students$.subscribe((students) => {
-      this.dataSource.data = students;
-    });
+  students$: Observable<Student[]>
+  isLoading$: Observable<boolean>;
+  error$: Observable<any>;
+
+  constructor(private studentsService: StudentsService, private store: Store<RootState>) {
+     this.students$ = this.store.select(selectStudents);
+     this.isLoading$ = this.store.select(selectIsLoading);
+     this.error$ = this.store.select(selectError);
   }
   
   ngOnInit() {
-    this.studentsService.getStudents();
+      this.store.dispatch(StudentsActions.loadStudents());
+    
+        this.students$.subscribe({
+          next: (students) => {
+            this.dataSource.data = students;
+          },
+          error: (error) => {
+            console.error('Error loading students:', error);
+          }
+        })
   }
 
   ngAfterViewInit() {

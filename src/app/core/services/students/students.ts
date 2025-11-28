@@ -18,6 +18,11 @@ export class StudentsService {
       this.getStudents();
   }
 
+
+  getStudentsForEffects() {
+      return this.http.get<Student[]>(this.studentsUrl);
+    }
+
   getStudents() {
       this.http.get<Student[]>(this.studentsUrl).subscribe((students) => {
         this.students = students;
@@ -30,27 +35,21 @@ export class StudentsService {
     }
 
    addStudent(student: Student) {
-        const newId = String(Number(this.students[this.students.length - 1].id) + 1);
-        student.id = newId;
         this.http.post<Student>(this.studentsUrl, student).subscribe((student) => {
           this.students.push(student);
           this.studentSubject.next([...this.students]);
         });
     }
     updateStudent(student: Student) {
-        const updatedStudents = this.students.map((s) => (s.id === student.id ? student : s));
-        this.http.put<Student>(`${this.studentsUrl}/${student.id}`, student).subscribe((student) => {
-          this.students = updatedStudents;
-          this.studentSubject.next(updatedStudents);
+      this.http.put<Student>(`${this.studentsUrl}/${student.id}`, student).subscribe((student) => {
+          this.studentSubject.next([...this.students, student]);
         });
     }
     
     deleteStudent(id: number) {
-        const updatedStudents = this.students.filter((s) => s.id !== id);
-        this.http.delete(`${this.studentsUrl}/${id}`).subscribe(() => {
-            this.students = updatedStudents;
-            this.studentSubject.next(updatedStudents);
-        });
+      this.http.delete<Student>(`${this.studentsUrl}/${id}`).subscribe(() => {
+              this.studentSubject.next(this.students.filter((s) => s.id !== id));
+            });
     }
 
 }
