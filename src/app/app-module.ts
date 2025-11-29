@@ -3,11 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { Users } from './users/users';
 import { UsersModule } from './users/users-module';
-import { SharedModule } from './shared/shared-module';
-import { AlumnosModule } from "./alumnos/alumnos-module";
-import { share } from 'rxjs';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideStore, StoreModule } from '@ngrx/store';
 import { rootReducer } from './core/store';
@@ -22,7 +18,6 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
     BrowserModule,
     AppRoutingModule,
     UsersModule,
-    AlumnosModule,
     StoreModule.forRoot(rootReducer),
     EffectsModule.forRoot([]),
 ],
