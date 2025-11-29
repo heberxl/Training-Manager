@@ -3,7 +3,7 @@ import { Course, courseColumns } from '../../../../core/services/courses/model/C
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { CoursesService } from '../../../../core/services/courses/courses';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { RootState } from '../../../../core/store';
 import { Observable } from 'rxjs';
 import { selectCourses, selectError, selectIsLoading } from '../store/courses.selectors';
@@ -19,13 +19,28 @@ export class CoursesTable {
   displayedColumns: string[] = courseColumns;
   dataSource = new MatTableDataSource<Course>([]);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  private _paginator!: MatPaginator;
 
-  courses$: Observable<Course[]>
+  @ViewChild(MatPaginator)
+  set paginator(p: MatPaginator) {
+    if (p) {
+      this._paginator = p;
+      this.dataSource.paginator = p;
+    }
+  }
+
+  get paginator(): MatPaginator {
+    return this._paginator;
+  }
+
+  courses$: Observable<Course[]>;
   isLoading$: Observable<boolean>;
   error$: Observable<any>;
 
-  constructor(private courseService: CoursesService, private store: Store<RootState>) {
+  constructor(
+    private courseService: CoursesService,
+    private store: Store<RootState>,
+  ) {
     this.courses$ = this.store.select(selectCourses);
     this.isLoading$ = this.store.select(selectIsLoading);
     this.error$ = this.store.select(selectError);
@@ -41,11 +56,7 @@ export class CoursesTable {
       error: (error) => {
         console.error('Error loading courses:', error);
       }
-    })
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    });
   }
 
   onDeleteCourse(id: number) {
@@ -61,4 +72,3 @@ export class CoursesTable {
     }
   }
 }
-

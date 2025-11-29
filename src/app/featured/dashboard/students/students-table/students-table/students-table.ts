@@ -16,36 +16,40 @@ import { StudentsActions } from '../../store/students.actions';
   styleUrl: './students-table.scss'
 })
 export class StudentsTable {
-   displayedColumns: string[] = studentColumns;
+  displayedColumns: string[] = studentColumns;
   dataSource = new MatTableDataSource<Student>([]);
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatPaginator)
+  set paginator(paginator: MatPaginator) {
+    if (paginator) {
+      this.dataSource.paginator = paginator;
+    }
+  }
 
-  students$: Observable<Student[]>
+  students$: Observable<Student[]>;
   isLoading$: Observable<boolean>;
   error$: Observable<any>;
 
-  constructor(private studentsService: StudentsService, private store: Store<RootState>) {
-     this.students$ = this.store.select(selectStudents);
-     this.isLoading$ = this.store.select(selectIsLoading);
-     this.error$ = this.store.select(selectError);
+  constructor(
+    private studentsService: StudentsService,
+    private store: Store<RootState>
+  ) {
+    this.students$ = this.store.select(selectStudents);
+    this.isLoading$ = this.store.select(selectIsLoading);
+    this.error$ = this.store.select(selectError);
   }
   
   ngOnInit() {
-      this.store.dispatch(StudentsActions.loadStudents());
+    this.store.dispatch(StudentsActions.loadStudents());
     
-        this.students$.subscribe({
-          next: (students) => {
-            this.dataSource.data = students;
-          },
-          error: (error) => {
-            console.error('Error loading students:', error);
-          }
-        })
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
+    this.students$.subscribe({
+      next: (students) => {
+        this.dataSource.data = students;
+      },
+      error: (error) => {
+        console.error('Error loading students:', error);
+      }
+    });
   }
 
   onDeleteStudent(id: number) {
