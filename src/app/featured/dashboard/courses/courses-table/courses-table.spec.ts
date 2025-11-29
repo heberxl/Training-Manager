@@ -7,6 +7,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { CoursesRoutingModule } from '../courses-routing-module';
 import { SharedModule } from '../../../../shared/shared-module';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('CoursesTable Component', () => {
   let component: CoursesTable;
@@ -15,7 +17,7 @@ describe('CoursesTable Component', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [CoursesTable],
-      imports: [CommonModule, CoursesRoutingModule, SharedModule],
+      imports: [CommonModule, CoursesRoutingModule, SharedModule,  MatProgressSpinnerModule],
       providers: [
         {
           provide: ActivatedRoute,
@@ -29,6 +31,7 @@ describe('CoursesTable Component', () => {
           },
         },
         provideHttpClient(withFetch()),
+        provideMockStore(),
       ]
     })
     .compileComponents();

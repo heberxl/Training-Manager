@@ -1,35 +1,70 @@
-import { inject, TestBed } from "@angular/core/testing";
-import { AuthService } from "./auth";
-import { H } from "@angular/cdk/keycodes";
-import { HttpClient, provideHttpClient, withFetch } from "@angular/common/http";
-import { Router } from "@angular/router";
-import { of } from "rxjs";
-import { provideHttpClientTesting } from "@angular/common/http/testing";
+import { Injectable } from '@angular/core';
+import { API_URL } from '../../utils/constants';
+import { HttpClient } from '@angular/common/http';
+import { User } from './model/User';
+import { Router } from '@angular/router';
+import { map, Observable, of } from 'rxjs';
+import { RootState } from '../../store';
+import { Store } from '@ngrx/store';
+import { selectUser } from '../../store/auth/auth.selector';
+import { setAuthUser } from '../../store/auth/auth.action';
 
-describe('Auth Services Tests', () => {
-  let service: AuthService;
-  let http: HttpClient
-  
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [ AuthService, provideHttpClient(withFetch()), Router, provideHttpClientTesting()],
-    });
-    service = TestBed.inject(AuthService);
-    http = TestBed.inject(HttpClient);
-  });
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private usersUrl = `${API_URL}/user`;
+  user$: Observable<any>;
 
-  it('Debería crear el servicio', () => {
-      expect(service).not.toBeNull();
-    });
-  
-  it('Debería devolver un booleano si est{a logueado', () => {
-      expect(service.isAuthenticated()).toBe(false);
-    });
-/*  
-  it('Debería llamar a login', () => {
-      const httpSpy = spyOn(http, 'get').and.returnValue(of([]));
-      service.login('email', 'password');
-      expect(httpSpy).toHaveBeenCalled();
-    });
-*/  
-});
+  constructor(private http: HttpClient, private router: Router, private store: Store<RootState>) { 
+    this.user$ = this.store.select(selectUser);
+    const token = localStorage.getItem('token');
+    if (token) {
+      const [email, password] = token.split('&');
+      this.login(email, password).subscribe((user) => {
+        this.store.dispatch(setAuthUser({ payload: user }))
+      });
+    }
+      
+  }
+
+  login(email: string, password: string) {
+
+    return this.http.get<User[]>(this.usersUrl).pipe(
+      map((users) => {
+        const user = users.find((user) => user.email === email);
+
+        if(!user) {
+          throw new Error('Usuario no encontrado');
+        }
+        if (user.password !== password) {
+          throw new Error('Contraseña incorrecta');
+        }
+
+        this.setToken(`${user.email}&${user.password}`);
+        this.store.dispatch(setAuthUser({ payload: user }));
+        
+        return user;
+      })
+  )
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.store.dispatch(setAuthUser({ payload: null }));
+    this.router.navigate(['/login']);
+  }
+
+  setToken(email: string) {
+    localStorage.setItem('token', email);
+  }
+
+  isAuthenticated() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      return false;
+    }
+    return true;
+  }
+}

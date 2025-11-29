@@ -7,6 +7,7 @@ import { DashboardRoutingModule } from './dashboard-routing-module';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
+import { provideMockStore } from '@ngrx/store/testing';
 
 describe('Dashboard', () => {
   let component: Dashboard;
@@ -16,26 +17,26 @@ describe('Dashboard', () => {
     await TestBed.configureTestingModule({
       declarations: [Dashboard],
       imports: [
-         CommonModule,
-         SharedModule,
-         DashboardRoutingModule
+        CommonModule,
+        SharedModule,
+        DashboardRoutingModule,
       ],
       providers: [
         provideHttpClient(withFetch()),
-         {
+        provideMockStore(),
+        {
           provide: ActivatedRoute,
           useValue: {
             params: of({}),
             snapshot: {
               params: {
-                get: () => null
+                get: () => null,
               },
             },
           },
         },
       ],
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Dashboard);
     component = fixture.componentInstance;

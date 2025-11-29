@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Login } from './login';
+import { AuthModule } from '../auth-module';
+import { provideMockStore } from '@ngrx/store/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Login', () => {
   let component: Login;
@@ -8,9 +10,14 @@ describe('Login', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [Login]
-    })
-    .compileComponents();
+      imports: [
+        AuthModule,
+        HttpClientTestingModule
+      ],
+      providers: [
+        provideMockStore(),
+      ],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Login);
     component = fixture.componentInstance;
